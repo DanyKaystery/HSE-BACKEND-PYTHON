@@ -1,0 +1,32 @@
+DC = docker-compose
+EXEC = docker-compose run --rm web
+MANAGE = python manage.py
+
+.PHONY: build up down logs shell makemigrations migrate superuser test
+
+build:
+	$(DC) build --no-cache
+
+up:
+	$(DC) up -d
+
+down:
+	$(DC) down
+
+logs:
+	$(DC) logs -f
+
+makemigrations:
+	$(EXEC) $(MANAGE) makemigrations
+
+migrate:
+	$(EXEC) $(MANAGE) migrate
+
+superuser:
+	$(EXEC) $(MANAGE) createsuperuser
+
+test:
+	$(EXEC) python -m pytest
+
+clean:
+	$(DC) down -v
